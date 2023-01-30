@@ -3,16 +3,7 @@
 
 FUNCIONES PARA GENERAR TABLA HTML INSERTADA DESDE JS, CAMBIAR SU ESTADO DE BLANCO (FALSE) A NEGRO (TRUE) Y CLONAR SU ESTADO A UN ARRAY VACIO (gridClone)
 
-
-let rows = 10;
-let columns = 10;
-let cellSidePx = 80;
-let gridClone = [];
-
-gridGenerator();
-
-function gridGenerator() {
-  /**
+/**
    * 1.1 Declaramos la variable table donde se almacenará toda la
    * tabla generada, a partir de las etiquetas html insertadas desde js.
    *
@@ -34,7 +25,31 @@ function gridGenerator() {
    *
    * 1.5 Necesitamos que cada celda tenga un identificador único, para esto le daremos el nº de su columna y de su fila,
    * seguidos por un guión con ayuda de ${}  -> <td id="cell-${c + "-" + r}">
+   *
+   * 2.1 El objetivo de esta función es cambiar el estado de una celula de viva a muerta, y viceversa
+   * cuando hagamos click encima, la debe tener cada celula, por eso debemos agregarsela en la función
+   * gridGenerator. Para llamarla se utiliza onmouseup="changeStatus(${c},${r})" siendo c el nº de
+   * columna y r el nº de fila.
+   *
+   * 2.2 Debemos crear la variable "cell" para almacenar el ID de la celula cambiada en cada momento.
+   * Para cambiar su estado de blanco (muerta) a viva (negro) utilizamos una condición.
+   *
+   * 3.1 Esta función realiza una copia del estado del tablero cuando es llamada y almacena la información
+   * en la variable "gridClone" declarada globalmente como un array vacío. Recorre primero cada columna y luego cada
+   * fila, pusheando el estado de cada casilla (true o false) dentro de la variable.
+   *
+   * 3.2 Pregunta a cada celula si su background es === "black", si está viva (negra) dará true y si no dará false.
    */
+
+
+let rows = 10;
+let columns = 10;
+let cellSidePx = 80;
+let gridClone = [];
+
+gridGenerator();
+
+function gridGenerator() {
   let table = "<table cellpadding = 0 cellspacing = 0 id='dashboard'>"; //1.1
 
   for (let r = 0; r < rows; r++) {
@@ -60,16 +75,8 @@ function gridGenerator() {
   dashboard.style.height = cellSidePx * rows + "px";
 }
 
+
 function changeStatus(c, r) {
-  /**
-   * 2.1 El objetivo de esta función es cambiar el estado de una celula de viva a muerta, y viceversa
-   * cuando hagamos click encima, la debe tener cada celula, por eso debemos agregarsela en la función
-   * gridGenerator. Para llamarla se utiliza onmouseup="changeStatus(${c},${r})" siendo c el nº de
-   * columna y r el nº de fila.
-   *
-   * 2.2 Debemos crear la variable "cell" para almacenar el ID de la celula cambiada en cada momento.
-   * Para cambiar su estado de blanco (muerta) a viva (negro) utilizamos una condición.
-   */
   let cell = document.getElementById(`cell-${c + "-" + r}`); //2.1
   if (cell.style.background != "black") {
     //2.2
@@ -79,15 +86,8 @@ function changeStatus(c, r) {
   }
 }
 
-function gridStatusClone() {
-  /**
-   * 3.1 Esta función realiza una copia del estado del tablero cuando es llamada y almacena la información
-   * en la variable "gridClone" declarada globalmente como un array vacío. Recorre primero cada columna y luego cada
-   * fila, pusheando el estado de cada casilla (true o false) dentro de la variable.
-   *
-   * 3.2 Pregunta a cada celula si su background es === "black", si está viva (negra) dará true y si no dará false.
-   */
 
+function gridStatusClone() {
   gridClone = []; //3.1
   for (let r = 0; r < rows; r++) {
     gridClone.push([]);
